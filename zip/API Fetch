@@ -1,0 +1,94 @@
+  // Get Api
+  const tableData = async () => {
+   
+    try {
+      const resp = await fetch("http://192.168.1.96:4500/application/show");
+      const actualData = await resp.json();
+      console.log(actualData);
+      setShow(actualData);
+    } catch (err) {}
+  };
+  useEffect(() => {
+    tableData();
+  }, []);
+
+//Delete Data  with Api
+
+function deleteUser(id){ //Delete Data
+console.log(id)
+  fetch(`http://192.168.1.96:4500/application/delete/${id}`,{
+    method: 'GET', //What Ever Method Used By BAckend Devloper (GET,POST,Delete ...etc)
+  }).then((result)=>{
+    
+    console.log(result);
+    tableData()
+  })
+}
+
+//Update Api
+    fetch(`http://192.168.1.96:4500/sales/update/${show.inquiryid}`, {   //Update Api
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(show)
+    }).then((result) => {
+      console.log(result);
+    
+    });
+  };
+  const changeHandler = (e) => {
+    const { value, name } = e.target;
+    setShow((oldvalue) => {
+      return {
+        ...oldvalue,
+        [name]: value,
+      };
+    });
+  };
+  
+  
+  ///Image Upload with AXios
+  
+  
+  
+          <TextField
+		id="outlined-basic"
+		size="small"
+		type='file'
+		onChange={(event)=>{
+		console.log(event.target.files[0]);
+			setImages(event.target.files[0])
+			}}
+		name="addprofilepicture"
+		placeholder="Enter Profile Picture"
+		variant="outlined"
+		style={{ width: "24vw" }}
+	/>
+                          
+        const url='http://192.168.1.96:4500/client'
+        const formData = new FormData();
+        formData.append('clientid',show.clientid) //(1st field name , 2nd usestate)
+        formData.append('skypeid',show.skypeid) 
+        formData.append('firstname',show.firstname)
+        formData.append('lastname',show.lastname)
+        formData.append('email',show.email)
+        formData.append('phonenumber',show.phonenumber)
+        formData.append('linkdin',show.linkdin)
+        formData.append('addprofilepicture',images)
+        formData.append('location',show.location)
+        formData.append('company',show.company)
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+            // 'content-type': 'application/json',
+          },  
+        };
+        console.log(formData)
+        axios.post(url,formData,config).then((res)=>{
+          console.log(res)
+        })
+  
+  
+
